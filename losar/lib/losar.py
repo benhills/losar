@@ -34,7 +34,7 @@ def losar(image, N,
         if verbose:
             print(tidx, end=' ')
 
-        image_sub = image[:, tidx-N//2:tidx+N//2]
+        image_sub = image[:, max(0,tidx-N//2): min(tnum, tidx+N//2)]
 
         if layer_finding == 'doppler':
             P, nus = doppler_centroid(image_sub, dx=dx)
@@ -46,7 +46,7 @@ def losar(image, N,
 
         p_best, f_best = get_optimal_frequencies(P, nus)
 
-        losar_image[:, tidx, 0] = p_best
-        losar_image[:, tidx, 1] = f_best
+        losar_image[0, :, tidx] = p_best
+        losar_image[1, :, tidx] = f_best
 
     return losar_image
